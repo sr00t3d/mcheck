@@ -89,48 +89,29 @@ sudo install -m 0755 mcheck.sh /usr/local/bin/mcheck
 ./mcheck.sh -i 203.0.113.10 --resolver 127.0.0.1
 ```
 
-### Windows (PowerShell `mcheck.ps1`)
+#
 
-Zero dependências externas — funciona nativamente no **Windows PowerShell 5.1** e **PowerShell 7+** (`Resolve-DnsName` / `.NET DNS`):
+## Execução Direta & Windows PowerShell
 
-```powershell
-# Auditar um IPv4 ou domínio (resolve registros A/MX)
-.\mcheck.ps1 -Ip 1.1.1.1
-.\mcheck.ps1 -Ip 127.0.0.2 -OnlyListed -ExitCode
-
-# Auditar o IP público de saída em JSON
-.\mcheck.ps1 -MyIp -Output json
-
-# Gerenciar e auditar gateways SMTP customizados (%AppData%\mcheck\gateways.conf)
-.\mcheck.ps1 -AddGateway relay01.exemplo.com.br
-.\mcheck.ps1 -ListGateways
-.\mcheck.ps1 -CheckGateways -OnlyListed -ExitCode
-.\mcheck.ps1 -RemoveGateway relay01.exemplo.com.br
+### Linux / macOS (Execução Direta)
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/sr00t3d/mcheck/main/mcheck.sh) -i 1.1.1.1
 ```
 
-### Todas as Opções
+### Windows (PowerShell `mcheck.ps1`)
+Zero dependências externas — compatível com **Windows PowerShell 5.1+** e **PowerShell 7+**:
 
-| Opção | Descrição |
-| :--- | :--- |
-| `-i, --ip <ip\|domínio>` | Audita um IPv4 ou domínio (resolve registros A/MX) |
-| `-m, --my-ip` | Audita o IPv4 público de saída do servidor atual |
-| `-g, --check-gateways` | Audita todos os gateways customizados cadastrados |
-| `--add-gateway <host\|ip>` | Cadastra um gateway SMTP em `gateways.conf` |
-| `--remove-gateway <host\|ip>` | Remove um gateway SMTP de `gateways.conf` |
-| `--list-gateways` | Lista todos os gateways customizados cadastrados |
-| `--gateways-file <caminho>` | Arquivo de gateways customizados (padrão: `~/.config/mcheck/gateways.conf`) |
-| `--rbl-file <caminho>` | Arquivo customizado de DNSBLs (uma zona por linha) |
-| `--resolver <ip>` | IP de resolvedor DNS customizado |
-| `--timeout <seg>` | Timeout por consulta DNSBL em segundos (padrão: `2`) |
-| `--only-listed` | Exibe apenas linhas `LISTED` / `QUERY_BLOCKED` / `TIMEOUT` na tabela |
-| `--exit-code` | Retorna código `2` se algum IP estiver `LISTED` (ideal para Cron/CI/NOC) |
-| `-o, --output <fmt>` | Formato de saída: `table` (padrão), `json`, `csv` |
-| `-q, --quiet` | Omite cabeçalho e resumo final |
-| `--no-color` | Desativa cores ANSI |
-| `-V, --version` | Exibe a versão e encerra |
-| `-h, --help` | Exibe a ajuda e encerra |
+```powershell
+# Execução direta (sem clonar)
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/sr00t3d/mcheck/main/mcheck.ps1))) -Ip 1.1.1.1
 
----
+# Execução local
+.\mcheck.ps1 -Ip 1.1.1.1
+.\mcheck.ps1 -Ip 127.0.0.2 -OnlyListed -ExitCode
+.\mcheck.ps1 -MyIp -Output json
+.\mcheck.ps1 -AddGateway relay01.example.com
+.\mcheck.ps1 -CheckGateways -OnlyListed -ExitCode
+```
 
 ## Exemplo Real de Saída
 

@@ -89,48 +89,29 @@ sudo install -m 0755 mcheck.sh /usr/local/bin/mcheck
 ./mcheck.sh -i 203.0.113.10 --resolver 127.0.0.1
 ```
 
-### Windows (PowerShell `mcheck.ps1`)
+#
 
-Zero external dependencies — works natively on **Windows PowerShell 5.1** and **PowerShell 7+** (`Resolve-DnsName` / `.NET DNS`):
+## Direct Execution & Windows PowerShell
 
-```powershell
-# Check an IPv4 or domain (resolves A/MX records)
-.\mcheck.ps1 -Ip 1.1.1.1
-.\mcheck.ps1 -Ip 127.0.0.2 -OnlyListed -ExitCode
-
-# Check your current public egress IP in JSON
-.\mcheck.ps1 -MyIp -Output json
-
-# Manage and audit custom SMTP gateways (%AppData%\mcheck\gateways.conf)
-.\mcheck.ps1 -AddGateway relay01.example.com
-.\mcheck.ps1 -ListGateways
-.\mcheck.ps1 -CheckGateways -OnlyListed -ExitCode
-.\mcheck.ps1 -RemoveGateway relay01.example.com
+### Linux / macOS (Direct Execution)
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/sr00t3d/mcheck/main/mcheck.sh) -i 1.1.1.1
 ```
 
-### All Options
+### Windows (PowerShell `mcheck.ps1`)
+Zero external dependencies — works natively on **Windows PowerShell 5.1+** and **PowerShell 7+**:
 
-| Option | Description |
-| :--- | :--- |
-| `-i, --ip <ip\|domain>` | Check an IPv4 address or domain (resolves A/MX records) |
-| `-m, --my-ip` | Check the current host's public egress IPv4 |
-| `-g, --check-gateways` | Audit all registered custom gateways |
-| `--add-gateway <host\|ip>` | Register a custom SMTP gateway in `gateways.conf` |
-| `--remove-gateway <host\|ip>` | Remove a custom SMTP gateway from `gateways.conf` |
-| `--list-gateways` | List all registered custom gateways |
-| `--gateways-file <path>` | Custom gateways file (default: `~/.config/mcheck/gateways.conf`) |
-| `--rbl-file <path>` | Custom DNSBL zone file (one zone per line) |
-| `--resolver <ip>` | Custom DNS resolver IP |
-| `--timeout <sec>` | DNS query timeout per RBL in seconds (default: `2`) |
-| `--only-listed` | Show only `LISTED` / `QUERY_BLOCKED` / `TIMEOUT` rows in table output |
-| `--exit-code` | Exit with code `2` if any IP is `LISTED` (for Cron/CI/NOC) |
-| `-o, --output <fmt>` | Output format: `table` (default), `json`, `csv` |
-| `-q, --quiet` | Suppress banner header and summary footer |
-| `--no-color` | Disable ANSI colors |
-| `-V, --version` | Show version and exit |
-| `-h, --help` | Show help and exit |
+```powershell
+# Direct execution (no clone required)
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/sr00t3d/mcheck/main/mcheck.ps1))) -Ip 1.1.1.1
 
----
+# Local execution
+.\mcheck.ps1 -Ip 1.1.1.1
+.\mcheck.ps1 -Ip 127.0.0.2 -OnlyListed -ExitCode
+.\mcheck.ps1 -MyIp -Output json
+.\mcheck.ps1 -AddGateway relay01.example.com
+.\mcheck.ps1 -CheckGateways -OnlyListed -ExitCode
+```
 
 ## Real Output Example
 
