@@ -3,9 +3,9 @@
 # mcheck — DNSBL / RBL Reputation & Custom Mail Gateway Monitor CLI
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0-brightgreen.svg)](https://github.com/sr00t3d/mcheck/releases)
-[![Bash](https://img.shields.io/badge/Bash-4.0%2B-4EAA25?logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
-[![Zero Dependencies](https://img.shields.io/badge/dependencies-dig%20%2B%20curl-informational.svg)](#requirements)
+[![Version](https://img.shields.io/badge/version-2.1.0-brightgreen.svg)](https://github.com/sr00t3d/mcheck/releases)
+[![Bash](https://img.shields.io/badge/Linux%20%2F%20macOS-Bash%204.0%2B-4EAA25?logo=gnu-bash&logoColor=white)](mcheck.sh)
+[![PowerShell](https://img.shields.io/badge/Windows-PowerShell%205.1%2B%20%2F%207%2B-5391FE?logo=powershell&logoColor=white)](mcheck.ps1)
 
 ![mcheck Cover](mcheck-cover.webp)
 
@@ -87,6 +87,25 @@ sudo install -m 0755 mcheck.sh /usr/local/bin/mcheck
 
 # Use a private recursive DNS resolver for Spamhaus/CBL
 ./mcheck.sh -i 203.0.113.10 --resolver 127.0.0.1
+```
+
+### Windows (PowerShell `mcheck.ps1`)
+
+Zero external dependencies — works natively on **Windows PowerShell 5.1** and **PowerShell 7+** (`Resolve-DnsName` / `.NET DNS`):
+
+```powershell
+# Check an IPv4 or domain (resolves A/MX records)
+.\mcheck.ps1 -Ip 1.1.1.1
+.\mcheck.ps1 -Ip 127.0.0.2 -OnlyListed -ExitCode
+
+# Check your current public egress IP in JSON
+.\mcheck.ps1 -MyIp -Output json
+
+# Manage and audit custom SMTP gateways (%AppData%\mcheck\gateways.conf)
+.\mcheck.ps1 -AddGateway relay01.example.com
+.\mcheck.ps1 -ListGateways
+.\mcheck.ps1 -CheckGateways -OnlyListed -ExitCode
+.\mcheck.ps1 -RemoveGateway relay01.example.com
 ```
 
 ### All Options
