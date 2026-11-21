@@ -7,6 +7,8 @@
 [![Bash](https://img.shields.io/badge/Bash-4.0%2B-4EAA25?logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-dig%20%2B%20curl-informational.svg)](#requirements)
 
+![mcheck Cover](mcheck-cover.webp)
+
 **`mcheck.sh`** is a lightweight Bash CLI for auditing IPv4 addresses, domains (A/MX records), local egress IPs, and **custom SMTP mail gateways (`customGateway`)** against **16 empirically verified active DNSBL / RBL zones**.
 
 Originally created in 2014 by **Percio Andrade (Percio Castelo)** to monitor shared hosting mail gateways, **`v2.0.0`** replaces hardcoded legacy HostGator gateways with a persistent user-managed `customGateway` registry, removes dead/shutdown blacklists (SORBS, APEWS, Manitu, etc.), adds Spamhaus/CBL public-resolver detection (`QUERY_BLOCKED`), and outputs structured `table`, `json`, and `csv` reports ready for Cron, Zabbix, and NOC pipelines.
